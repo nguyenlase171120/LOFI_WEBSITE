@@ -9,7 +9,7 @@ import Button_header from "../button/Button_header";
 import SwitchMode from "./switch_mode/SwitchMode";
 import { useSelector } from "react-redux";
 
-function Header({ props }) {
+function Header_container({ props }) {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(async () => {
@@ -36,4 +36,4 @@ function Header({ props }) {
   );
 }
 
-export default Header;
+export default Header_container;

@@ -6,10 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { login_selector } from "../selector/login_selector";
 import { buttonSlice } from "../redux/buttonReducer";
 import { valid_input } from "../error/Valid_form";
-import { useNavigate } from "react-router-dom";
 
 function Login_form() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msgError, setMsgError] = useState("");

@@ -1,36 +1,43 @@
+//Import libraries
 import ReactPlayer from "react-player";
-import Header from "./components/header/Header";
-import ShareForm from "./components/shareform/ShareForm";
 import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+
+//Import components
+import Header_container from "./components/header/Header_container";
 import Login_form from "./components/login/Login_form";
 import { share_selector } from "./components/selector/share_selector";
 import { login_selector } from "./components/selector/login_selector";
-import { useState, useEffect } from "react";
 import { modeSelector } from "./components/selector/mode_selector";
 import Footer_website from "./components/footer/Footer_website";
 import { audioSong } from "./api/audioSong";
 import Music_container from "./components/music_type/music_container/Music_container";
 import { buttonSlice } from "./components/redux/buttonReducer";
+import Share_table from "./components/ShareTable/Share_table";
 
 function App() {
   const dispatch = useDispatch();
-  const isShare = useSelector(share_selector);
-  const isLogin = useSelector(login_selector);
-  console.log(isLogin);
+  const isClickShare = useSelector(share_selector);
+  const isClickLogin = useSelector(login_selector);
+  const modeType = useSelector(modeSelector);
+
   const [listSongs, setListSongs] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSongs, setIsLoadingSongs] = useState(false);
 
   useEffect(async () => {
-    const listSongs = await audioSong.getListSongs();
-    setListSongs(listSongs.data.documents);
-    dispatch(buttonSlice.actions.getAllSongs(listSongs.data.documents));
-    setIsLoading(true);
+    const getListSongs = await audioSong.getListSongs();
+    setListSongs(getListSongs.data.documents);
+    dispatch(buttonSlice.actions.getAllSongs(listSongs));
+    setIsLoadingSongs(true);
   }, []);
 
-  const mode = useSelector(modeSelector);
+  //UseEffect for switch mode
+  useEffect(() => {
+    handleSwitchMode();
+  }, [modeType]);
 
-  const renderMode = (modeType) => {
-    switch (modeType) {
+  const handleSwitchMode = (mode) => {
+    switch (mode) {
       case "dark": {
         return (
           <ReactPlayer
@@ -91,15 +98,13 @@ function App() {
     }
   };
 
-  renderMode();
-
   return (
     <div className="w-full h-full">
-      <Header />
-      {renderMode(mode)}
-      {isShare && <ShareForm />}
-      {isLogin && <Login_form />}
-      {isLoading && <Footer_website listAnimeSongs={listSongs} />}
+      <Header_container />
+      {handleSwitchMode(modeType)}
+      {isClickShare && <Share_table />}
+      {isClickLogin && <Login_form />}
+      {isLoadingSongs && <Footer_website listAnimeSongs={listSongs} />}
       <Music_container />
     </div>
   );

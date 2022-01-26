@@ -1,13 +1,13 @@
-import React from "react";
 import Button_header from "../button/Button_header";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { buttonSlice } from "../redux/buttonReducer";
 import { share_selector } from "../selector/share_selector";
 
-function ShareForm() {
+function Share_table() {
   const dispatch = useDispatch();
   const isResult = useSelector(share_selector);
+
   const handleShare = (e) => {
     e.preventDefault();
     dispatch(buttonSlice.actions.btn_share(!isResult));
@@ -34,4 +34,4 @@ function ShareForm() {
   );
 }
 
-export default ShareForm;
+export default Share_table;
